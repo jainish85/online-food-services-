@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Menu | FoodDelight</title>
+    <style>
+        /* Base Styles */
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Navigation Bar - Matching Your Existing Style */
+        #nav {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            width: 100%;
+            background-color: transparent;
+            position: fixed;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            padding: 0 20px;
+        }
+        
+        #logo {
+            margin-left: 30px;
+            height: 100%;
+            width: 250px;
+            display: flex;
+            align-items: center;
+        }
+        
+        #logo img {
+            height: 90px;
+        }
+        
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .search-box {
+            margin-left: 10%;
+            padding: 10px;
+            width: 400px;
+            height: 8px;
+            border: 2px solid #ffffff;
+            border-radius: 10px;
+            outline: none;
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .search-button img {
+            margin-top: 4px;
+            height: 20px;
+        }
+        
+        .button {
+            margin-left: 30px;
+            height: 40px;
+            width: 90px;
+            font-size: 20px;
+            background-color: transparent;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .button:hover {
+            box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.6);
+            transform: scale(.9);
+            background-color: orange;
+            color: black;
+        }
+        
+        .button a {
+            color: aliceblue;
+            text-decoration: none;
+        }
+        
+        .button a:hover {
+            color: rgb(0, 0, 0);
+        }
+        
+        /* Pizza Page Styles */
+        .pizza-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-top: 80px;
+        }
+        
+        .pizza-header h1 {
+            font-size: 3rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .pizza-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        
+        .pizza-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .pizza-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .pizza-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .pizza-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .pizza-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .pizza-card:hover .pizza-image img {
+            transform: scale(1.05);
+        }
+        
+        .pizza-details {
+            padding: 20px;
+        }
+        
+        .pizza-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .pizza-price {
+            font-size: 1.3rem;
+            color: #e67e22;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .pizza-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .pizza-ingredients {
+            margin-bottom: 20px;
+        }
+        
+        .pizza-ingredients h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .ingredients-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .ingredient-tag {
+            background-color: #f39c12;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .order-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .order-btn:hover {
+            background-color: #d35400;
+        }
+        
+        /* Footer - Matching Your Existing Style */
+        .site-footer {
+            background-color: #f6eadb;
+            color: #000000;
+            padding: 40px 0 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+        
+        .footer-section h3 {
+            color: #f39c12;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #000000;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #f39c12;
+        }
+        
+        .contact-info {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .contact-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .subscribe-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .subscribe-form input {
+            padding: 10px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            width: 70%;
+        }
+        
+        .subscribe-form button {
+            padding: 10px 15px;
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .subscribe-form button:hover {
+            background-color: #e67e22;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .footer-bottom {
+            background-color: #1a252f;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .footer-bottom p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #bdc3c7;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .pizza-header h1 {
+                font-size: 2rem;
+            }
+            
+            .pizza-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            #nav {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 15px;
+            }
+            
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 15px 0;
+            }
+            
+            .search-box {
+                width: 100%;
+                margin-left: 0;
+            }
+            
+            .button {
+                margin: 5px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div id="nav">
+            <div id="logo"><img src="https://via.placeholder.com/250x90?text=FoodDelight+Logo" alt="FoodDelight Logo"></div>
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search...">
+                <button class="search-button"><img src="https://cdn-icons-png.flaticon.com/512/149/149852.png" alt="Search" style="width:20px;height:20px;"></button>
+            </div>
+            <div id="login" class="button"><a href="loginpage/login.html">Login</a></div>
+            <div id="offer" class="button"><a href="offer2/offer.html">Offer</a></div>
+            <div id="about" class="button"><a href="about/about.html">About</a></div>
+            <div id="profile" class="button"><a href="profile/profile.html">Profile</a></div>
+            <div id="feedback" class="button"><a href="feedback/feedback.html">Feedback</a></div>
+        </div>
+        
+        <div class="pizza-header">
+            <h1>Our Delicious Pizzas</h1>
+        </div>
+        
+        <div class="pizza-container">
+            <div class="pizza-grid">
+                <!-- Pizza 1 -->
+                <div class="pizza-card">
+                    <div class="pizza-image">
+                        <img src="https://images.unsplash.com/photo-1571066811602-716837d681de?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Margherita Pizza">
+                    </div>
+                    <div class="pizza-details">
+                        <h3 class="pizza-name">Margherita Pizza</h3>
+                        <p class="pizza-price">₹399</p>
+                        <p class="pizza-description">The classic pizza with tomato sauce, fresh mozzarella, and basil. Simple yet delicious!</p>
+                        <div class="pizza-ingredients">
+                            <h4>Ingredients:</h4>
+                            <div class="ingredients-list">
+                                <span class="ingredient-tag">Tomato Sauce</span>
+                                <span class="ingredient-tag">Mozzarella</span>
+                                <span class="ingredient-tag">Fresh Basil</span>
+                                <span class="ingredient-tag">Olive Oil</span>
+                            </div>
+                        </div>
+                        <a href="delivery/delivery.html" class="order-btn">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Pizza 2 -->
+                <div class="pizza-card">
+                    <div class="pizza-image">
+                        <img src="https://images.unsplash.com/photo-1588315029754-2dd089d39a1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pepperoni Pizza">
+                    </div>
+                    <div class="pizza-details">
+                        <h3 class="pizza-name">Pepperoni Pizza</h3>
+                        <p class="pizza-price">₹449</p>
+                        <p class="pizza-description">Loaded with spicy pepperoni slices and extra cheese on a tomato sauce base.</p>
+                        <div class="pizza-ingredients">
+                            <h4>Ingredients:</h4>
+                            <div class="ingredients-list">
+                                <span class="ingredient-tag">Tomato Sauce</span>
+                                <span class="ingredient-tag">Mozzarella</span>
+                                <span class="ingredient-tag">Pepperoni</span>
+                                <span class="ingredient-tag">Oregano</span>
+                            </div>
+                        </div>
+                        <a href="delivery/delivery.html" class="order-btn">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Pizza 3 -->
+                <div class="pizza-card">
+                    <div class="pizza-image">
+                        <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Veg Supreme Pizza">
+                    </div>
+                    <div class="pizza-details">
+                        <h3 class="pizza-name">Veg Supreme</h3>
+                        <p class="pizza-price">₹499</p>
+                        <p class="pizza-description">A vegetarian delight with mushrooms, bell peppers, onions, olives, and extra cheese.</p>
+                        <div class="pizza-ingredients">
+                            <h4>Ingredients:</h4>
+                            <div class="ingredients-list">
+                                <span class="ingredient-tag">Tomato Sauce</span>
+                                <span class="ingredient-tag">Mozzarella</span>
+                                <span class="ingredient-tag">Mushrooms</span>
+                                <span class="ingredient-tag">Bell Peppers</span>
+                                <span class="ingredient-tag">Onions</span>
+                                <span class="ingredient-tag">Olives</span>
+                            </div>
+                        </div>
+                        <a href="delivery/delivery.html" class="order-btn">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Pizza 4 -->
+                <div class="pizza-card">
+                    <div class="pizza-image">
+                        <img src="https://images.unsplash.com/photo-1620374645498-af6bd681a0bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="BBQ Chicken Pizza">
+                    </div>
+                    <div class="pizza-details">
+                        <h3 class="pizza-name">BBQ Chicken Pizza</h3>
+                        <p class="pizza-price">₹549</p>
+                        <p class="pizza-description">Tangy BBQ sauce, grilled chicken, red onions, and cilantro on a crispy crust.</p>
+                        <div class="pizza-ingredients">
+                            <h4>Ingredients:</h4>
+                            <div class="ingredients-list">
+                                <span class="ingredient-tag">BBQ Sauce</span>
+                                <span class="ingredient-tag">Grilled Chicken</span>
+                                <span class="ingredient-tag">Red Onions</span>
+                                <span class="ingredient-tag">Cilantro</span>
+                                <span class="ingredient-tag">Mozzarella</span>
+                            </div>
+                        </div>
+                        <a href="delivery/delivery.html" class="order-btn">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Pizza 5 -->
+                <div class="pizza-card">
+                    <div class="pizza-image">
+                        <img src="https://images.unsplash.com/photo-1601924582970-9238bcb495d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Four Cheese Pizza">
+                    </div>
+                    <div class="pizza-details">
+                        <h3 class="pizza-name">Four Cheese Pizza</h3>
+                        <p class="pizza-price">₹479</p>
+                        <p class="pizza-description">A cheese lover's dream with mozzarella, gorgonzola, parmesan, and ricotta.</p>
+                        <div class="pizza-ingredients">
+                            <h4>Ingredients:</h4>
+                            <div class="ingredients-list">
+                                <span class="ingredient-tag">Mozzarella</span>
+                                <span class="ingredient-tag">Gorgonzola</span>
+                                <span class="ingredient-tag">Parmesan</span>
+                                <span class="ingredient-tag">Ricotta</span>
+                                <span class="ingredient-tag">Tomato Sauce</span>
+                            </div>
+                        </div>
+                        <a href="delivery/delivery.html" class="order-btn">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Pizza 6 -->
+                <div class="pizza-card">
+                    <div class="pizza-image">
+                        <img src="https://images.unsplash.com/photo-1601924582970-9238bcb495d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paneer Tikka Pizza">
+                    </div>
+                    <div class="pizza-details">
+                        <h3 class="pizza-name">Paneer Tikka Pizza</h3>
+                        <p class="pizza-price">₹529</p>
+                        <p class="pizza-description">Indian twist with spiced paneer cubes, onions, bell peppers, and mint chutney.</p>
+                        <div class="pizza-ingredients">
+                            <h4>Ingredients:</h4>
+                            <div class="ingredients-list">
+                                <span class="ingredient-tag">Paneer Cubes</span>
+                                <span class="ingredient-tag">Tikka Masala</span>
+                                <span class="ingredient-tag">Onions</span>
+                                <span class="ingredient-tag">Bell Peppers</span>
+                                <span class="ingredient-tag">Mint Chutney</span>
+                            </div>
+                        </div>
+                        <a href="delivery/delivery.html" class="order-btn">Order Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="site-footer">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>We are a passionate team dedicated to creating amazing web experiences. Our mission is to help businesses establish their online presence.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/portfolio">Portfolio</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul class="contact-info">
+                        <li><i>📍</i> 123 Web Street, Digital City</li>
+                        <li><i>📞</i> +1 (555) 123-4567</li>
+                        <li><i>✉️</i> info@example.com</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter for the latest updates.</p>
+                    <form class="subscribe-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                    <div class="social-icons">
+                        <a href="#"><i>📘</i></a>
+                        <a href="#"><i>🐦</i></a>
+                        <a href="#"><i>📷</i></a>
+                        <a href="#"><i>🔗</i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 FoodDelight. All Rights Reserved. | <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
